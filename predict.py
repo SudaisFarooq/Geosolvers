@@ -6,15 +6,15 @@ import tensorflow as tf
 import pandas as pd
 import requests
 import datetime
+import joblib
 from sklearn.preprocessing import MinMaxScaler
 
 # ----------------------------
 # 1. Load Random Forest model
 # ----------------------------
 rf_model_path =  os.path.join(os.path.dirname(__file__), 'models', 'random_forest_model .pkl')
+rf_model = joblib.load(rf_model_path) 
 
-with open(rf_model_path, 'rb') as f:
-    rf_model = pickle.load(f)
 
 # ----------------------------
 # 2. Load LSTM models + scalers
