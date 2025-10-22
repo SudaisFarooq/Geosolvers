@@ -71,12 +71,21 @@
 
       try {
         const response = await fetch('/predict', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ village, start_date, end_date })
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({ village, start_date, end_date })
         });
-        const data = await response.json();
-        if (data.error) throw new Error(data.error);
+
+        let data;
+      try {
+       data = await response.json();
+       } catch (e) {
+      throw new Error("Server returned invalid or empty JSON. Check backend logs.");
+      }
+
+      if (!data) throw new Error("No data returned from server.");
+      if (data.error) throw new Error(data.error);
+
 
         const dates = data.forecast.map(d => d.date);
         const rain_mm = data.forecast.map(d => d.rainfall);

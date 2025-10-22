@@ -1,7 +1,7 @@
-
-import os
 import numpy as np
 import pickle
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 import tensorflow as tf
 import pandas as pd
 import requests

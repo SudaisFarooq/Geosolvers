@@ -20,18 +20,26 @@ def case_study():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    try:
-        data = request.get_json()
-        village = data.get('village')
-        start_date = data.get('start_date')
-        end_date = data.get('end_date')
+    data = request.get_json()
+    village = data.get('village')
+    start_date = data.get('start_date')
+    end_date = data.get('end_date')
 
-        result = predict_flood(village=village, start_date=start_date, end_date=end_date)
+    try:
+        if start_date:
+            start_date = pd.to_datetime(start_date).date()
+        if end_date:
+            end_date = pd.to_datetime(end_date).date()
+
+        result = predict_flood(village, start_date=start_date, end_date=end_date)
         return jsonify(result)
 
     except Exception as e:
-        print("Error during prediction:", str(e))  # log error
+        import traceback
+        print("🔥 SERVER ERROR:", e)
+        traceback.print_exc()
         return jsonify({"error": str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
