@@ -20,14 +20,17 @@ def case_study():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    data = request.get_json()
-    village = data.get('village')
-    start_date = data.get('start_date') or None
-    end_date = data.get('end_date') or None
     try:
-        result = predict_flood(village, start_date=start_date, end_date=end_date)
+        data = request.get_json()
+        village = data.get('village')
+        start_date = data.get('start_date')
+        end_date = data.get('end_date')
+
+        result = predict_flood(village=village, start_date=start_date, end_date=end_date)
         return jsonify(result)
+
     except Exception as e:
+        print("Error during prediction:", str(e))  # log error
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
